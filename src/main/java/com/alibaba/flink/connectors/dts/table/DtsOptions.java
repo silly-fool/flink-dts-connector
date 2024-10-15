@@ -12,8 +12,6 @@ import org.apache.flink.util.Preconditions;
 
 import java.util.stream.IntStream;
 
-import static org.apache.flink.table.types.logical.utils.LogicalTypeChecks.hasRoot;
-
 public class DtsOptions {
 
     private DtsOptions() {}
@@ -67,7 +65,7 @@ public class DtsOptions {
             ReadableConfig options, DataType physicalDataType) {
         final LogicalType physicalType = physicalDataType.getLogicalType();
         Preconditions.checkArgument(
-                hasRoot(physicalType, LogicalTypeRoot.ROW), "Row data type expected.");
+                physicalType.is(LogicalTypeRoot.ROW), "Row data type expected.");
         final int physicalFieldCount = LogicalTypeChecks.getFieldCount(physicalType);
         final IntStream physicalFields = IntStream.range(0, physicalFieldCount);
 

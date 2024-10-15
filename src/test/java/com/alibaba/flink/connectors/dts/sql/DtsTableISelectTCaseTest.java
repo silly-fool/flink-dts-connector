@@ -32,7 +32,7 @@ public class DtsTableISelectTCaseTest {
         Properties properties = new Properties();
 
         /*将平台页面中设置的参数值加载到Properties对象中。*/
-        properties.load(new StringReader(new String(Files.readAllBytes(Paths.get(configFilePath)), StandardCharsets.UTF_8)));
+        //properties.load(new StringReader(new String(Files.readAllBytes(Paths.get(configFilePath)), StandardCharsets.UTF_8)));
 
         env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -47,7 +47,7 @@ public class DtsTableISelectTCaseTest {
                         CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
         env.setStateBackend(new FsStateBackend("file:///tmp/checkpoints/dts-checkpoint"));
 
-        EnvironmentSettings settings = EnvironmentSettings.newInstance().useBlinkPlanner().inStreamingMode().build();
+        EnvironmentSettings settings = EnvironmentSettings.newInstance().inStreamingMode().build();
 
         tEnv = StreamTableEnvironment.create(env, settings);
 

@@ -5,15 +5,20 @@ import com.alibaba.flink.connectors.dts.FlinkDtsKafkaConsumer;
 import com.alibaba.flink.connectors.dts.FlinkDtsRawConsumer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.annotation.Internal;
+
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.DataStreamSource;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.KafkaDeserializationSchema;
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.table.connector.ChangelogMode;
+import org.apache.flink.table.connector.ProviderContext;
 import org.apache.flink.table.connector.format.DecodingFormat;
+import org.apache.flink.table.connector.source.DataStreamScanProvider;
 import org.apache.flink.table.connector.source.DynamicTableSource;
-import org.apache.flink.table.connector.source.ScanTableSource;
 import org.apache.flink.table.connector.source.SourceFunctionProvider;
 import org.apache.flink.table.connector.source.abilities.SupportsReadingMetadata;
 import org.apache.flink.table.connector.source.abilities.SupportsWatermarkPushDown;
@@ -27,6 +32,8 @@ import org.apache.flink.util.Preconditions;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Header;
 
+import org.apache.flink.table.connector.source.ScanTableSource;
+
 import javax.annotation.Nullable;
 import java.io.Serializable;
 import java.util.*;
@@ -34,7 +41,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-/** A version-agnostic Dts {@link ScanTableSource}. */
+/** A version-agnostic Dts. */
 @Internal
 public class DtsDynamicSource implements ScanTableSource, SupportsReadingMetadata, SupportsWatermarkPushDown {
     // --------------------------------------------------------------------------------------------
